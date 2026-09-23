@@ -1,0 +1,16 @@
+.env
+.env.local
+**/.env.local
+**/node_modules/
+**/dist/
+**/venv/
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+*.py[cod]
+*.tsbuildinfo
+backend/data/*.db
+backend/data/*.db-*
+backend/data/artifacts/*.joblib
+.DS_Store
+.logs/

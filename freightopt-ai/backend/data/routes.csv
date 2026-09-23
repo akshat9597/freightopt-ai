@@ -1,0 +1,99 @@
+origin_port,destination_port,distance_nm,estimated_sailing_days
+Newcastle,Paradip,6020,18.58
+Newcastle,Visakhapatnam,5930,18.3
+Newcastle,Gangavaram,5900,18.21
+Newcastle,Gopalpur,5980,18.46
+Newcastle,Dhamra,6080,18.77
+Newcastle,Sagar / Sandheads,6140,18.95
+Newcastle,Haldia,6210,19.17
+Hay Point,Paradip,5420,16.73
+Hay Point,Visakhapatnam,5330,16.45
+Hay Point,Gangavaram,5300,16.36
+Hay Point,Gopalpur,5380,16.6
+Hay Point,Dhamra,5480,16.91
+Hay Point,Sagar / Sandheads,5540,17.1
+Hay Point,Haldia,5610,17.31
+Gladstone,Paradip,5620,17.35
+Gladstone,Visakhapatnam,5530,17.07
+Gladstone,Gangavaram,5500,16.98
+Gladstone,Gopalpur,5580,17.22
+Gladstone,Dhamra,5680,17.53
+Gladstone,Sagar / Sandheads,5740,17.72
+Gladstone,Haldia,5810,17.93
+Port Hedland,Paradip,3720,11.48
+Port Hedland,Visakhapatnam,3630,11.2
+Port Hedland,Gangavaram,3600,11.11
+Port Hedland,Gopalpur,3680,11.36
+Port Hedland,Dhamra,3780,11.67
+Port Hedland,Sagar / Sandheads,3840,11.85
+Port Hedland,Haldia,3910,12.07
+Baltimore,Paradip,11320,34.94
+Baltimore,Visakhapatnam,11230,34.66
+Baltimore,Gangavaram,11200,34.57
+Baltimore,Gopalpur,11280,34.81
+Baltimore,Dhamra,11380,35.12
+Baltimore,Sagar / Sandheads,11440,35.31
+Baltimore,Haldia,11510,35.52
+Norfolk,Paradip,11120,34.32
+Norfolk,Visakhapatnam,11030,34.04
+Norfolk,Gangavaram,11000,33.95
+Norfolk,Gopalpur,11080,34.2
+Norfolk,Dhamra,11180,34.51
+Norfolk,Sagar / Sandheads,11240,34.69
+Norfolk,Haldia,11310,34.91
+New Orleans,Paradip,12320,38.02
+New Orleans,Visakhapatnam,12230,37.75
+New Orleans,Gangavaram,12200,37.65
+New Orleans,Gopalpur,12280,37.9
+New Orleans,Dhamra,12380,38.21
+New Orleans,Sagar / Sandheads,12440,38.4
+New Orleans,Haldia,12510,38.61
+Maputo,Paradip,4570,14.1
+Maputo,Visakhapatnam,4480,13.83
+Maputo,Gangavaram,4450,13.73
+Maputo,Gopalpur,4530,13.98
+Maputo,Dhamra,4630,14.29
+Maputo,Sagar / Sandheads,4690,14.48
+Maputo,Haldia,4760,14.69
+Beira,Paradip,4220,13.02
+Beira,Visakhapatnam,4130,12.75
+Beira,Gangavaram,4100,12.65
+Beira,Gopalpur,4180,12.9
+Beira,Dhamra,4280,13.21
+Beira,Sagar / Sandheads,4340,13.4
+Beira,Haldia,4410,13.61
+Nacala,Paradip,3720,11.48
+Nacala,Visakhapatnam,3630,11.2
+Nacala,Gangavaram,3600,11.11
+Nacala,Gopalpur,3680,11.36
+Nacala,Dhamra,3780,11.67
+Nacala,Sagar / Sandheads,3840,11.85
+Nacala,Haldia,3910,12.07
+Balikpapan,Paradip,3220,9.94
+Balikpapan,Visakhapatnam,3130,9.66
+Balikpapan,Gangavaram,3100,9.57
+Balikpapan,Gopalpur,3180,9.81
+Balikpapan,Dhamra,3280,10.12
+Balikpapan,Sagar / Sandheads,3340,10.31
+Balikpapan,Haldia,3410,10.52
+Samarinda,Paradip,3320,10.25
+Samarinda,Visakhapatnam,3230,9.97
+Samarinda,Gangavaram,3200,9.88
+Samarinda,Gopalpur,3280,10.12
+Samarinda,Dhamra,3380,10.43
+Samarinda,Sagar / Sandheads,3440,10.62
+Samarinda,Haldia,3510,10.83
+Taboneo,Paradip,3020,9.32
+Taboneo,Visakhapatnam,2930,9.04
+Taboneo,Gangavaram,2900,8.95
+Taboneo,Gopalpur,2980,9.2
+Taboneo,Dhamra,3080,9.51
+Taboneo,Sagar / Sandheads,3140,9.69
+Taboneo,Haldia,3210,9.91
+Vostochny,Paradip,5420,16.73
+Vostochny,Visakhapatnam,5330,16.45
+Vostochny,Gangavaram,5300,16.36
+Vostochny,Gopalpur,5380,16.6
+Vostochny,Dhamra,5480,16.91
+Vostochny,Sagar / Sandheads,5540,17.1
+Vostochny,Haldia,5610,17.31
