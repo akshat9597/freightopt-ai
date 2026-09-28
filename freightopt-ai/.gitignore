@@ -11,6 +11,5 @@
 *.tsbuildinfo
 backend/data/*.db
 backend/data/*.db-*
-backend/data/artifacts/*.joblib
 .DS_Store
 .logs/

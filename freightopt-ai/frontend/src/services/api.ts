@@ -2,7 +2,7 @@ import axios from "axios";
 import type { Decision, Forecast, Simulation, Voyage } from "../types";
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "/api",
-  timeout: 120000,
+  timeout: 15000,
 });
 export const optimizeVoyage = async (voyage: Voyage) =>
   (await api.post<Decision>("/optimize", voyage)).data;
@@ -23,9 +23,11 @@ export function errorMessage(error: unknown): string {
         )
         .join(". ");
     if (typeof detail === "string") return detail;
+    if (error.code === "ECONNABORTED" || error.code === "ETIMEDOUT")
+      return "The server did not respond within 15 seconds. It may be waking up or temporarily busy. Please retry shortly.";
     return error.response
       ? `Request failed (${error.response.status}). Please try again.`
-      : "Cannot reach the API. Start the backend on port 8001 and retry. First startup may be training the models.";
+      : "The forecasting server is temporarily unreachable. Check your connection and retry shortly.";
   }
   return error instanceof Error
     ? error.message

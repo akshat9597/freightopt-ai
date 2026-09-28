@@ -114,7 +114,7 @@ export function Loading({
     <div className="state loading" role="status">
       <LoaderCircle className="spin" size={26} />
       <h3>{label}</h3>
-      <p>Loading data from the local forecasting engine.</p>
+      <p>Connecting to the forecasting server. The first connection may take longer if the server is waking up.</p>
     </div>
   );
 }

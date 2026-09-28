@@ -22,6 +22,7 @@ import { useSettings } from "./components/Settings";
 import { useApi } from "./hooks/useApi";
 import type { Config } from "./types";
 import { Loading } from "./components/UI";
+import { ConnectionNotice } from "./components/ConnectionNotice";
 import { fullDate } from "./utils/format";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Optimizer = lazy(() => import("./pages/Optimizer"));
@@ -198,6 +199,7 @@ export default function App() {
           </div>
         </header>
         <main id="main-content">
+          <ConnectionNotice />
           <div className="environment-line">
             <span>
               <span className="status-dot" />

@@ -1,5 +1,5 @@
 import pandas as pd
-from sqlalchemy import select, func
+from sqlalchemy import select, func, insert
 from app.config import DATA
 from app.database.session import Base, engine, SessionLocal
 from app.models.entities import Port, Vessel, Route, FreightRecord, AlertRecord
@@ -32,14 +32,10 @@ def seed():
                 db.add_all([cls(**r) for r in rows])
         if not db.scalar(select(func.count()).select_from(FreightRecord)):
             rows = pd.read_csv(DATA / "freight_history.csv").to_dict(orient="records")
-            db.add_all(
-                [
-                    FreightRecord(
-                        date=r["date"], rate=r["freight_rate_usd_per_tonne"], details=r
-                    )
-                    for r in rows
-                ]
-            )
+            db.execute(insert(FreightRecord), [
+                dict(date=r["date"], rate=r["freight_rate_usd_per_tonne"], details=r)
+                for r in rows
+            ])
         if not db.scalar(select(func.count()).select_from(AlertRecord)):
             db.add(
                 AlertRecord(

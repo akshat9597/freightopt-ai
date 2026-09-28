@@ -1,4 +1,5 @@
 from datetime import date
+import os
 from functools import lru_cache
 import pandas as pd
 from fastapi import APIRouter, Request, HTTPException, Query
@@ -55,6 +56,7 @@ router = APIRouter()
 
 
 class HealthResponse(BaseModel):
+    revision: str
     status: str
     model_ready: bool
     demo: bool
@@ -95,6 +97,7 @@ class DashboardResponse(BaseModel):
 @router.get("/health", response_model=HealthResponse)
 def health(request: Request):
     return dict(
+        revision=os.getenv("RENDER_GIT_COMMIT", "local"),
         status="ok",
         model_ready=hasattr(request.app.state, "forecaster"),
         demo=True,
@@ -347,7 +350,12 @@ def alerts(request: Request):
 
 @router.get("/dashboard", response_model=DashboardResponse)
 def dashboard(request: Request):
-    forecaster = request.app.state.forecaster
+    return build_dashboard(request.app.state.forecaster)
+
+
+@lru_cache(maxsize=2)
+def build_dashboard(forecaster):
+    # Demo inputs are immutable for this model/date; a restart invalidates the cache.
     m = market_overview(forecaster)
     decision = optimize(VoyageRequest(), forecaster, include_alternatives=False)
     return dict(

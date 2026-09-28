@@ -308,3 +308,34 @@ Engineering references: [scikit-learn guidance on leakage and pipelines](https:/
 **Demonstration data — replace with official port authority data for production.**
 
 No synthetic value is an official port limit, real vessel availability, navigational instruction, binding charter quote or guaranteed saving.
+
+
+## Fast hosted startup and connection recovery
+
+The trained demo model and preprocessing artifact are included in Git. Scikit-learn
+and Joblib are pinned to the versions used to produce these trusted artifacts.
+Render loads the model rather than training three models on every fresh instance.
+Training remains available locally with `python -m app.ml.train`. Commit regenerated
+artifacts together with metrics and compatible dependency versions.
+
+Existing Render services can retain `pip install -r requirements.txt` as their build
+command. Optionally use `pip install -r requirements.txt && python -m scripts.prepare_deploy`
+to validate/rebuild artifacts during the build. Keep the start command
+`uvicorn app.main:app --host 0.0.0.0 --port $PORT`, and use `/api/health` as the health
+check path. Hosted startup fails clearly if the bundled artifact is broken rather
+than silently starting an expensive training job.
+
+Dashboard calculations are cached per loaded model. Database history is seeded
+using a bulk insert. The frontend shares concurrent GET requests, saves successful
+responses for up to 24 hours, and labels saved data while refreshing. It never
+creates forecast values offline. Requests time out after 15 seconds; transient GET
+failures receive two bounded retries after 5 and 10 seconds. POST requests are not
+automatically repeated. Invalid HTML responses are rejected rather than rendered
+as API objects. Run `npm test`, `npm run lint`, and `npm run build` in `frontend`.
+
+Render Free spins down after 15 minutes without incoming traffic, and waking the
+service can take around a minute. Bundling a model removes application training
+from startup but cannot remove Render's infrastructure wake-up delay. For consistent
+first-visit availability, select an always-on paid **service compute instance** in
+Render; upgrading the workspace alone does not remove free-instance sleeping.
+See https://render.com/docs/free. No hosting plan is changed automatically.

@@ -1,11 +1,12 @@
 from contextlib import asynccontextmanager
 import logging
 import json
+import os
+from time import perf_counter
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import DATA, CORS_ORIGINS
 from app.database.seed import seed
-from app.ml.train import train
 from app.ml.predict import ForecastService
 
 logging.basicConfig(
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    started = perf_counter()
     logger.info("Starting FreightOpt AI demo initialization")
     if (
         not (DATA / "freight_history.csv").exists()
@@ -35,11 +37,15 @@ async def lifespan(app: FastAPI):
         json.JSONDecodeError,
         ModuleNotFoundError,
     ):
+        if os.getenv("RENDER") == "true":
+            raise RuntimeError("Bundled model could not load. Run python -m scripts.prepare_deploy during the Render build; do not train during web startup.")
+        from app.ml.train import train
+
         logger.info("Model unavailable; training bundled synthetic models")
         train()
         app.state.forecaster = ForecastService()
     seed()
-    logger.info("FreightOpt AI ready: data, trained model and database initialized")
+    logger.info("FreightOpt AI ready in %.2fs: bundled model and database loaded", perf_counter() - started)
     yield
 
 

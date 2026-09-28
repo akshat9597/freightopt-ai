@@ -210,3 +210,27 @@ def test_uncertainty_matches_final_booking(client, voyage):
     )
     assert risk["score"] == round(min(100, spread * 220))
     assert result["vessel_comparison"][0]["vessel"] == result["recommended_vessel"]
+
+
+def test_bundled_model_needs_no_training(monkeypatch):
+    from app.ml import train as training
+    def forbidden():
+        pytest.fail("Web startup must use the bundled model, not train")
+    monkeypatch.setattr(training, "train", forbidden)
+    monkeypatch.setenv("RENDER", "true")
+    with TestClient(app) as c:
+        assert c.get("/api/health").json()["model_ready"]
+
+
+def test_dashboard_reuses_results(client, monkeypatch):
+    from app.api import routes
+    routes.build_dashboard.cache_clear()
+    first = client.get("/api/dashboard")
+    assert first.status_code == 200
+    def forbidden(*args, **kwargs):
+        pytest.fail("Repeated dashboard reads should not recompute optimizations")
+    monkeypatch.setattr(routes, "optimize", forbidden)
+    second = client.get("/api/dashboard")
+    assert second.status_code == 200
+    assert second.json() == first.json()
+    routes.build_dashboard.cache_clear()
