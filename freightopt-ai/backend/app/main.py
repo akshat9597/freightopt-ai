@@ -3,6 +3,7 @@ import logging
 import json
 import os
 from time import perf_counter
+from threading import Lock
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import DATA, CORS_ORIGINS
@@ -15,8 +16,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
+_initialization_lock = Lock()
+
+
+def _initialize(app: FastAPI):
     started = perf_counter()
     logger.info("Starting FreightOpt AI demo initialization")
     if (
@@ -37,7 +40,7 @@ async def lifespan(app: FastAPI):
         json.JSONDecodeError,
         ModuleNotFoundError,
     ):
-        if os.getenv("RENDER") == "true":
+        if os.getenv("RENDER") == "true" or os.getenv("FREIGHTOPT_HOSTED") == "true":
             raise RuntimeError("Bundled model could not load. Run python -m scripts.prepare_deploy during the Render build; do not train during web startup.")
         from app.ml.train import train
 
@@ -46,6 +49,18 @@ async def lifespan(app: FastAPI):
         app.state.forecaster = ForecastService()
     seed()
     logger.info("FreightOpt AI ready in %.2fs: bundled model and database loaded", perf_counter() - started)
+
+
+def initialize(app: FastAPI):
+    with _initialization_lock:
+        if not getattr(app.state, "initialized", False):
+            _initialize(app)
+            app.state.initialized = True
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    initialize(app)
     yield
 
 

@@ -57,6 +57,7 @@ router = APIRouter()
 
 class HealthResponse(BaseModel):
     revision: str
+    hosting: str
     status: str
     model_ready: bool
     demo: bool
@@ -97,7 +98,8 @@ class DashboardResponse(BaseModel):
 @router.get("/health", response_model=HealthResponse)
 def health(request: Request):
     return dict(
-        revision=os.getenv("RENDER_GIT_COMMIT", "local"),
+        revision=os.getenv("VERCEL_GIT_COMMIT_SHA", os.getenv("RENDER_GIT_COMMIT", "local")),
+        hosting="vercel" if os.getenv("VERCEL") else "render" if os.getenv("RENDER") else "local",
         status="ok",
         model_ready=hasattr(request.app.state, "forecaster"),
         demo=True,

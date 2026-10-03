@@ -339,3 +339,26 @@ from startup but cannot remove Render's infrastructure wake-up delay. For consis
 first-visit availability, select an always-on paid **service compute instance** in
 Render; upgrading the workspace alone does not remove free-instance sleeping.
 See https://render.com/docs/free. No hosting plan is changed automatically.
+
+## Production deployment: one Vercel application
+
+The production frontend now calls `/api` on its own domain. Its FastAPI function
+loads the same trained model and domain engines from `frontend/server/backend.zip`.
+There is **no Render proxy or fallback** and no background keep-alive service.
+An old `VITE_API_URL` pointing to Render is ignored in production (it still works
+for local development). Keep the Vercel project root `freightopt-ai/frontend`;
+`vercel.json` configures the Python function and SPA rewrites.
+
+After changing backend source or data, regenerate the reproducible deployment
+bundle with `python3 backend/scripts/package_vercel.py` from `freightopt-ai/`, and
+commit the updated archive alongside the source. `pytest` checks bundle freshness
+and exercises the packaged entrypoint in an isolated process. The archive only
+contains allowlisted application code, demo CSVs and trained model artifacts.
+Do not add credentials or operational data to the demo bundle.
+
+Vercel initializes the model once per worker and reuses cached dashboard results.
+Functions can still have cold-start latency and hosting quotas; this migration
+removes the separate Render sleep/wake dependency, not all possible outages.
+The SQLite database lives in per-instance temporary storage: demo optimization
+IDs/history are not durable or shared between instances. Use a managed PostgreSQL
+`DATABASE_URL` with its driver for production audit/history requirements.

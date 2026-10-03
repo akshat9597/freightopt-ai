@@ -1,7 +1,8 @@
 import axios from "axios";
 import type { Decision, Forecast, Simulation, Voyage } from "../types";
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/api",
+  // Production API is deployed alongside this site; old Render env values are ignored.
+  baseURL: import.meta.env.PROD ? "/api" : import.meta.env.VITE_API_URL || "/api",
   timeout: 15000,
 });
 export const optimizeVoyage = async (voyage: Voyage) =>
